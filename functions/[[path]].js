@@ -1,4 +1,4 @@
-// Cloudflare Pages Functions 反向代理
+// Cloudflare Pages Functions 反向代理 v1.1
 // 将所有请求代理到华为云 VPS，隐藏源站 IP
 const ORIGIN = 'http://123.60.222.204';
 
@@ -23,10 +23,8 @@ export async function onRequest(context) {
   try {
     const response = await fetch(proxyReq);
     const respHeaders = new Headers(response.headers);
-    // 让 Cloudflare 重新处理编码和长度
     respHeaders.delete('content-encoding');
     respHeaders.delete('content-length');
-    // 防止源站的 CSP 阻止
     respHeaders.delete('content-security-policy');
 
     return new Response(response.body, {
